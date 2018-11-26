@@ -1,0 +1,43 @@
+customers_management:
+  title: Clientes
+  description: Clientes
+  table:
+    full_name: Nombre
+    document_id: NIF/CIF
+    email: Correo electrónico
+    phone_number: Teléfonos
+  form:
+    basic_data: Datos básicos
+    company_name: 
+      label: Empresa
+    name: 
+      label: Nombre
+    surname: 
+      label: Apellidos
+    document_id: 
+      label: NIF/CIF
+    email: 
+      label: Correo electrónico
+    phone_number: 
+      label: Teléfono
+    mobile_phone: 
+      label: Teléfono alternativo  
+    language: 
+      label: Idioma
+    address: Dirección
+    invoicing_address: Dirección de facturación  
+address:
+  street:
+    label: Calle
+  number:
+    label: Número
+  complement:
+    label: Complemento
+  city:
+    label: Ciudad
+  state:
+    label: Provincia/Estado
+  zip:
+    label: Código postal
+  country:
+    label: País        

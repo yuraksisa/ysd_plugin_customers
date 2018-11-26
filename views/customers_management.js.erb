@@ -1,0 +1,40 @@
+require(["jquery", "YSDEntityManagement", "jquery.ui", "YSDjson2"], 
+         function($, EntityManagement, EntityManagementComplementHooks) {
+    
+  var customersHook = {
+     
+       
+    entityKey : function(entity) {
+      return entity.id;
+    },
+
+    onEdit : function(entity) {
+      $('#name').focus();
+      this.configForm(entity);
+    },
+  
+    onNew : function() {
+      $('#name').focus();
+      this.configForm(null);
+    },
+
+    configForm: function(entity) {
+    }
+        
+
+  };
+
+  var urls = { query_url  : '/api/customers',
+               create_url : '/api/customer',
+               update_url : '/api/customer',
+               delete_url : '/api/customer',
+               get_url    : '/api/customer'
+             };
+  
+  var hooks = [customersHook];
+                 
+  var hooksManager = new EntityManagement(urls, 'customers',
+     <%=customers%>, hooks, {prefix: '/admin/customers'});
+
+  
+});

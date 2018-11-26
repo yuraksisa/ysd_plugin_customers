@@ -1,0 +1,265 @@
+<%= include('entity-management') %>
+
+<!-- Renders the element description -->
+<script type="text/tmpl" id="elements_title">
+  <h2 class="entity-title"><%=t.customers_management.title%></h2>
+</script>
+
+<!-- Renders the element description -->
+<script type="text/tmpl" id="elements_description">
+<%=t.customers_management.description%>
+</script>
+
+<!-- Renders the elements container -->
+<script type="text/tmpl" id="elements_container_template">
+  <table id="elements_table" class="table">
+     <thead class="table-header">
+       <tr>
+         <th class="table-header-title" scope="col" style="width:20%">
+            <%= t.customers_management.table.full_name %>
+         </th>
+         <th class="table-header-title" scope="col" style="width:20%">
+           <%= t.customers_management.table.document_id %>
+         </th>
+         <th class="table-header-title" scope="col" style="width:30%">
+            <%= t.customers_management.table.email %>
+         </th>
+         <th class="table-header-title" scope="col" style="width:30%">
+            <%= t.customers_management.table.phone_number %>
+         </th>         
+       </tr>
+     </thead>
+     <tbody id="elements_tbody" class="table-tbody">
+     </tbody>
+  </table>
+</script>
+
+<!-- Renders one element in the elements list view -->
+        
+<script type="text/tmpl" id="elements_list_template">
+    <tr class="table-row" id="element_row_<%%=index%>">
+      <td class="table-cell element-navigation-detail" rel="<%%= index %>">
+        <%%= entity.name %> <%%= entity.surname %>
+      </td>
+      <td class="table-cell element-navigation-detail" rel="<%%= index %>">
+        <%%= entity.document_id %>
+      </td>
+      <td class="table-cell element-navigation-detail" rel="<%%= index %>">
+        <%%= entity.email %>
+      </td>
+      <td class="table-cell element-navigation-detail" rel="<%%=index%>">
+        <%%= entity.phone_number %> <%%= entity.mobile_phone %>
+      </td>
+    </tr>
+</script>
+
+<!-- Renders one element in the element view (full detailed) -->
+
+<script type="text/tmpl" id="element_template">
+   
+</script>
+
+<!-- Renders the form to edit an element -->
+
+<script type="text/tmpl" id="element_template_form">
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <div class="block ">
+              <div class="block-header bg-gray-lighter">
+                <h3 class="block-title"><%= t.customers_management.form.basic_data %></h3>
+              </div>
+              <div class="block-content block-content-narrow">
+                  <form name="element" class="form-horizontal" method="POST">
+                      <%% if (entity) { %>
+                      <input type="hidden" name="id" value="<%%=entity.id%>"/>
+                      <%% } %>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.name.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="40" id="name" name="name" class="form-control" <%% if (entity) {%> value="<%%=entity.name%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.surname.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="40" id="surname" name="surname" class="form-control" <%% if (entity) {%> value="<%%=entity.surname%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.document_id.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="document_id" name="document_id" class="form-control" <%% if (entity) {%> value="<%%=entity.document_id%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.email.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="40" id="email" name="email" class="form-control" <%% if (entity) {%> value="<%%=entity.email%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.phone_number.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="15" id="phone_number" name="phone_number" class="form-control" <%% if (entity) {%> value="<%%=entity.phone_number%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.mobile_phone.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="15" id="mobile_phone" name="mobile_phone" class="form-control" <%% if (entity) {%> value="<%%=entity.mobile_phone%>" <%%}%>/>
+                         </div>
+                      </div>                      
+                      <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3">
+                            <%% if (entity) { %>
+                              <input type="button" class="btn btn-sm btn-primary update-entity-button action-button entity-management-button" value="<%=t.entitymanagement.update%>"/>
+                            <%% } else { %>
+                              <input type="button" class="btn btn-sm btn-primary create-entity-button action-button entity-management-button" value="<%=t.entitymanagement.create%>"/>
+                            <%% } %>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%% if (entity) { %>
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <div class="block ">
+              <div class="block-header bg-gray-lighter">
+                <h3 class="block-title"><%= t.customers_management.form.address %></h3>
+              </div>
+              <div class="block-content block-content-narrow">
+                  <form name="element" class="form-horizontal" method="POST">
+                      <%% if (entity) { %>
+                      <input type="hidden" name="id" value="<%%=entity.id%>"/>
+                      <%% } %>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.street.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="60" id="address_street" name="address[street]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.street%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.number.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="address_number" name="address[number]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.number%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.complement.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="20" id="address_complement" name="address[complement]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.complement%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.city.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="60" id="address_city" name="address[city]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.city%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.state.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="address_state" name="address[state]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.state%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.zip.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="address_zip" name="address[zip]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.zip%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.country.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="address_country" name="address[country]" class="form-control" <%% if (entity && entity.address) {%> value="<%%=entity.address.country%>" <%%}%>/>
+                         </div>
+                      </div>                                              
+                      <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3">
+                            <%% if (entity) { %>
+                              <input type="button" class="btn btn-sm btn-primary update-entity-button action-button entity-management-button" value="<%=t.entitymanagement.update%>"/>
+                            <%% } %>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <div class="block ">
+              <div class="block-header bg-gray-lighter">
+                <h3 class="block-title"><%= t.customers_management.form.invoicing_address %></h3>
+              </div>
+              <div class="block-content block-content-narrow">
+                  <form name="element" class="form-horizontal" method="POST">
+                      <%% if (entity) { %>
+                      <input type="hidden" name="id" value="<%%=entity.id%>"/>
+                      <%% } %>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.street.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="60" id="invoice_address_street" name="invoice_address[street]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.street%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.number.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="invoice_address_number" name="invoice_address[number]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.number%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.complement.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="20" id="invoice_address_complement" name="invoice_address[complement]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.complement%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.city.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="60" id="invoice_address_city" name="invoice_address[city]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.city%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.state.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="invoice_address_state" name="invoice_address[state]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.state%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.zip.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="invoice_address_zip" name="invoice_address[zip]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.zip%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.address.country.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="invoice_address_country" name="invoice_address[country]" class="form-control" <%% if (entity && entity.invoice_address) {%> value="<%%=entity.invoice_address.country%>" <%%}%>/>
+                         </div>
+                      </div>                                              
+                      <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3">
+                            <%% if (entity) { %>
+                              <input type="button" class="btn btn-sm btn-primary update-entity-button action-button entity-management-button" value="<%=t.entitymanagement.update%>"/>
+                            <%% } %>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <%% } %>
+
+
+
+</script>
+
