@@ -34,7 +34,7 @@ require(["jquery", "YSDEntityManagement", "jquery.ui", "YSDjson2"],
   var hooks = [customersHook];
                  
   var hooksManager = new EntityManagement(urls, 'customers',
-     <%=customers%>, hooks, {prefix: '/admin/customers'});
+     <%=customers%>, hooks, {prefix: '/admin/customers', hold_form_after_action:true});
 
   
 });
