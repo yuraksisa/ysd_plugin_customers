@@ -12,7 +12,7 @@
 
 <!-- Renders the elements container -->
 <script type="text/tmpl" id="elements_container_template">
-  <table id="elements_table" class="table">
+  <table id="elements_table" class="table table-striped">
      <thead class="table-header">
        <tr>
          <th class="table-header-title" scope="col" style="width:20%">
@@ -125,6 +125,7 @@
         </div>
 
         <%% if (entity) { %>
+
         <div class="row">
           <div class="col-sm-12 col-md-10 col-md-offset-1">
             <div class="block ">
@@ -256,6 +257,297 @@
             </div>
           </div>
         </div>
+
+        <% if @product_family.driver_license %>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <div class="block ">
+              <div class="block-header bg-gray-lighter">
+                <h3 class="block-title"><%= t.customers_management.form.booking_driver_data.title %></h3>
+              </div>
+              <div class="block-content block-content-narrow">
+                  <form name="element" class="form-horizontal" method="POST">
+                      <%% if (entity) { %>
+                      <input type="hidden" name="id" value="<%%=entity.id%>"/>
+                      <%% } %>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.document_id_date.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="document_id_date" name="document_id_date" class="form-control"/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.document_id_expiration_date.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="document_id_expiration_date" name="document_id_expiration_date" class="form-control" />
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.origin_country.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="origin_country" name="origin_country" class="form-control" <%% if (entity) {%> value="<%%=entity.origin_country%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.date_of_birth.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="date_of_birth" name="date_of_birth" class="form-control" <%% if (entity) {%> value="<%%=entity.date_of_birth%>" <%%}%>/>
+                         </div>
+                      </div>
+
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.driving_license_number.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="driving_license_number" name="driving_license_number" class="form-control" <%% if (entity) {%> value="<%%=entity.driving_license_number%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.driving_license_date.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="driving_license_date" name="driving_license_date" class="form-control" />
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.driving_license_country.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="driving_license_country" name="driving_license_country" class="form-control" <%% if (entity) {%> value="<%%=entity.driving_license_country%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.booking_driver_data.fields.driving_license_expiration_date.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="10" id="driving_license_expiration_date" name="driving_license_expiration_date" class="form-control" <%% if (entity) {%> value="<%%=entity.driving_license_expiration_date%>" <%%}%>/>
+                         </div>
+                      </div>
+                     
+                      <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3">
+                            <%% if (entity) { %>
+                              <input type="button" class="btn btn-sm btn-primary update-entity-button action-button entity-management-button" value="<%=t.entitymanagement.update%>"/>
+                            <%% } else { %>
+                              <input type="button" class="btn btn-sm btn-primary create-entity-button action-button entity-management-button" value="<%=t.entitymanagement.create%>"/>
+                            <%% } %>
+                        </div>
+                      </div>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <div class="block ">
+              <div class="block-header bg-gray-lighter">
+                <h3 class="block-title"><%= t.customers_management.form.booking_additional_drivers_data.title %></h3>
+              </div>
+              <div class="block-content block-content-narrow">
+                  <form name="element" class="form-horizontal" method="POST">
+                    <%% if (entity) { %>
+                    <input type="hidden" name="id" value="<%%=entity.id%>"/>
+                    <%% } %>
+                    <div class="container_12">
+                      <div class="grid_6">
+                           <div class="more_contrast_text top-margin" style="text-decoration:underline; margin-left:5px"><%=t.booking_management.form.additional_driver_1_title%></div>            
+                          <div class="element_template">
+                            <div class="entity-field">
+                              <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_name %></span>
+                              <span class="entity-fieldvalue">
+                                <input type="text" maxlength="40" size="12" name="additional_driver_1_name" id="additional_driver_1_name"
+                                  value="<%%=entity.additional_driver_1_name%>"/>
+                                <input type="text" maxlength="40" size="13" name="additional_driver_1_surname" id="additional_driver_1_surname"
+                                  value="<%%=entity.additional_driver_1_surname%>"/>
+                              </span>
+                            </div>
+                          </div> 
+                          <div class="element_template">
+                            <div class="entity-field">
+                              <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_date_of_birth %></span>
+                              <span class="entity-fieldvalue">
+                                 <input type="text" name="additional_driver_1_date_of_birth" id="additional_driver_1_date_of_birth" class="date_control" size="15" maxlength="10"/>
+                              </span>
+                            </div>
+                          </div>               
+                          <div class="top-margin" style="text-decoration:underline; margin-left:5px"><%=t.booking_management.form.driver_document%></div>
+                          <div class="element_template">
+                              <div class="entity-field">
+                                 <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_document_id %></span>
+                                 <span class="entity-fieldvalue">
+                                   <input type="text" maxlength="50" size="25" name="additional_driver_1_document_id" id="additional_driver_1_document_id"
+                                  value="<%%=entity.additional_driver_1_document_id%>"/>
+                                </span>
+                              </div>
+                          </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_origin_country %></span>
+                                <span class="entity-fieldvalue">
+                                   <input type="text" maxlength="80" size="25" name="additional_driver_1_origin_country" id="additional_driver_1_origin_country"
+                                          value="<%%=entity.additional_driver_1_origin_country%>"/>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_document_id_date %></span>
+                                <span class="entity-fieldvalue">
+                                    <input type="text" name="additional_driver_1_document_id_date" id="additional_driver_1_document_id_date" class="date_control" size="15" maxlength="10"/>
+                                 </span>
+                              </div>
+                            </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_document_id_expiration_date %></span>
+                                <span class="entity-fieldvalue">
+                                    <input type="text" name="additional_driver_1_document_id_expiration_date" id="additional_driver_1_document_id_expiration_date" class="date_control" size="15" maxlength="10"/>
+                                 </span>
+                              </div>
+                            </div>
+                            <div class="top-margin" style="text-decoration:underline; margin-left:5px"><%=t.booking_management.form.driver_license%></div>
+                          <div class="element_template">
+                              <div class="entity-field">
+                                 <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_license_number %></span>
+                                 <span class="entity-fieldvalue">
+                                   <input type="text" maxlength="50" size="25" name="additional_driver_1_driving_license_number" id="additional_driver_1_driving_license_number"
+                                  value="<%%=entity.additional_driver_1_driving_license_number%>"/>                       
+                                </span>
+                              </div>
+                          </div> 
+                          <div class="element_template">
+                              <div class="entity-field">
+                                 <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_license_date %></span>
+                                 <span class="entity-fieldvalue">                     
+                                    <input type="text" name="additional_driver_1_driving_license_date" id="additional_driver_1_driving_license_date" class="date_control" size="15" maxlength="10"/>
+                                 </span>
+                              </div>
+                          </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_driving_license_expiration_date %></span>
+                                <span class="entity-fieldvalue">
+                                 <input type="text" name="additional_driver_1_driving_license_expiration_date" id="additional_driver_1_driving_license_expiration_date" class="date_control" size="15" maxlength="10"/>
+                              </span>
+                              </div>
+                            </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_license_country %></span>
+                                <span class="entity-fieldvalue">
+                                <input type="text" maxlength="50" size="25" name="additional_driver_1_driving_license_country" id="additional_driver_1_driving_license_country"
+                                       value="<%%=entity.additional_driver_1_driving_license_country%>"/>
+                              </span>
+                              </div>
+                            </div>
+                      </div>
+                      <div class="grid_6">
+                          <div class="more_contrast_text top-margin" style="text-decoration:underline; margin-left:5px"><%=t.booking_management.form.additional_driver_2_title%></div>            
+                          <div class="element_template">
+                            <div class="entity-field">
+                              <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_name %></span>
+                              <span class="entity-fieldvalue">
+                                <input type="text" maxlength="40" size="12" name="additional_driver_2_name" id="additional_driver_2_name"
+                                  value="<%%=entity.additional_driver_2_name%>"/>
+                                <input type="text" maxlength="40" size="13" name="additional_driver_2_surname" id="additional_driver_1_surname"
+                                  value="<%%=entity.additional_driver_2_surname%>"/>
+                              </span>
+                            </div>
+                          </div> 
+                          <div class="element_template">
+                            <div class="entity-field">
+                              <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_date_of_birth %></span>
+                              <span class="entity-fieldvalue">
+                                 <input type="text" name="additional_driver_2_date_of_birth" id="additional_driver_2_date_of_birth" class="date_control" size="15" maxlength="10"/>
+                              </span>
+                            </div>
+                          </div>               
+                            <div class="top-margin" style="text-decoration:underline; margin-left:5px"><%=t.booking_management.form.driver_document%></div>
+                          <div class="element_template">
+                              <div class="entity-field">
+                                 <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_document_id %></span>
+                                 <span class="entity-fieldvalue">
+                                   <input type="text" maxlength="50" size="25" name="additional_driver_2_document_id" id="additional_driver_2_document_id"
+                                  value="<%%=entity.additional_driver_2_document_id%>"/>
+                                </span>
+                              </div>
+                          </div>
+
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_origin_country %></span>
+                                <span class="entity-fieldvalue">
+                                   <input type="text" maxlength="80" size="25" name="additional_driver_2_origin_country" id="additional_driver_2_origin_country"
+                                          value="<%%=entity.additional_driver_2_origin_country%>"/>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_document_id_date %></span>
+                                <span class="entity-fieldvalue">
+                                    <input type="text" name="additional_driver_2_document_id_date" id="additional_driver_2_document_id_date" class="date_control" size="15" maxlength="10"/>
+                                 </span>
+                              </div>
+                            </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_document_id_expiration_date %></span>
+                                <span class="entity-fieldvalue">
+                                    <input type="text" name="additional_driver_2_document_id_expiration_date" id="additional_driver_2_document_id_expiration_date" class="date_control" size="15" maxlength="10"/>
+                                 </span>
+                              </div>
+                            </div>
+                            <div class="top-margin" style="text-decoration:underline; margin-left:5px"><%=t.booking_management.form.driver_license%></div>
+                          <div class="element_template">
+                              <div class="entity-field">
+                                 <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_license_number %></span>
+                                 <span class="entity-fieldvalue">
+                                   <input type="text" maxlength="50" size="25" name="additional_driver_2_driving_license_number" id="additional_driver_2_driving_license_number"
+                                  value="<%%=entity.additional_driver_2_driving_license_number%>"/>                       
+                                </span>
+                              </div>
+                          </div> 
+                          <div class="element_template">
+                              <div class="entity-field">
+                                 <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_license_date %></span>
+                                 <span class="entity-fieldvalue">                     
+                                    <input type="text" name="additional_driver_2_driving_license_date" id="additional_driver_2_driving_license_date" class="date_control" size="15" maxlength="10"/>
+                                 </span>
+                              </div>
+                          </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_driving_license_expiration_date %></span>
+                                <span class="entity-fieldvalue">
+                                 <input type="text" name="additional_driver_2_driving_license_expiration_date" id="additional_driver_2_driving_license_expiration_date" class="date_control" size="15" maxlength="10"/>
+                              </span>
+                              </div>
+                            </div>
+                            <div class="element_template">
+                              <div class="entity-field">
+                                <span class="entity-fieldlabel less_contrast_text"><%= t.booking_management.form.driver_license_country %></span>
+                                <span class="entity-fieldvalue">
+                                <input type="text" maxlength="50" size="25" name="additional_driver_2_driving_license_country" id="additional_driver_2_driving_license_country"
+                                       value="<%%=entity.additional_driver_2_driving_license_country%>"/>
+                              </span>
+                              </div>
+                            </div>
+                      </div>
+                    </div>
+                    <div class="navigation-bar bottom-margin">
+                      <div id="additional_drivers_error_summary" class="alert alert-danger" style="display: none; margin: 10px"></div>
+                          <div class="navigation-bar-crud-buttons right-float right-margin">
+                            <input type="submit" class="update-entity-button action-button entity-management-button" value="<%=t.entitymanagement.update%>"/>
+                          </div>
+                    </div> 
+
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>                      
+
+        <% end %>
 
         <%% } %>
 

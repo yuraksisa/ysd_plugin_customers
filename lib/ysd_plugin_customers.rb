@@ -1,4 +1,5 @@
 require "ysd_plugin_customers/version"
+require "ysd_plugin_customers/model/ysd_md_customer_booking"
 require "ysd_plugin_customers/model/ysd_md_customer"
 
 require "ysd_plugin_customers/sinatra/ysd_sinatra_customers"

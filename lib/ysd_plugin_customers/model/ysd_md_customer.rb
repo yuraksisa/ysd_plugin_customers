@@ -24,6 +24,8 @@ module Yito
         belongs_to :address, 'LocationDataSystem::Address', required: false # Address 
         belongs_to :invoice_address, 'LocationDataSystem::Address', required: false # Invoice address
 
+        include BookingCustomer
+
         #
         # Exporting to json
         #

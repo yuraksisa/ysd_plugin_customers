@@ -19,6 +19,75 @@ require(["jquery", "YSDEntityManagement", "jquery.ui", "YSDjson2"],
     },
 
     configForm: function(entity) {
+      <% if @product_family.driver %>
+      $.datepicker.setDefaults( $.datepicker.regional["<%=session[:locale] || 'es'%>" ] );
+      var locale = $.datepicker.regional["<%=session[:locale] || 'es'%>"];
+      
+      $('#document_id_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#document_id_date').datepicker('setDate', new Date(entity.document_id_date));
+      
+      $('#document_id_expiration_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#document_id_expiration_date').datepicker('setDate', new Date(entity.document_id_expiration_date));
+      
+      $('#date_of_birth').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#date_of_birth').datepicker('setDate', new Date(entity.date_of_birth));
+
+      $('#driving_license_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#driving_license_date').datepicker('setDate', new Date(entity.driving_license_date));
+
+      $('#driving_license_expiration_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#driving_license_expiration_date').datepicker('setDate', new Date(entity.driving_license_expiration_date));
+
+      // Additional driver 1
+
+      $('#additional_driver_1_document_id_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_1_document_id_date').datepicker('setDate', new Date(entity.additional_driver_1_document_id_date));
+      
+      $('#additional_driver_1_document_id_expiration_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_1_document_id_expiration_date').datepicker('setDate', new Date(entity.additional_driver_1_document_id_expiration_date));
+      
+      $('#additional_driver_1_date_of_birth').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_1_date_of_birth').datepicker('setDate', new Date(entity.additional_driver_1_date_of_birth));
+
+      $('#additional_driver_1_driving_license_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_1_driving_license_date').datepicker('setDate', new Date(entity.additional_driver_1_driving_license_date));
+
+      $('#additional_driver_1_driving_license_expiration_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_1_driving_license_expiration_date').datepicker('setDate', new Date(entity.additional_driver_1_driving_license_expiration_date));
+
+      // Additional driver 2
+
+      $('#additional_driver_2_document_id_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_2_document_id_date').datepicker('setDate', new Date(entity.additional_driver_2_document_id_date));
+      
+      $('#additional_driver_2_document_id_expiration_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_2_document_id_expiration_date').datepicker('setDate', new Date(entity.additional_driver_2_document_id_expiration_date));
+      
+      $('#additional_driver_2_date_of_birth').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_2_date_of_birth').datepicker('setDate', new Date(entity.additional_driver_2_date_of_birth));
+
+      $('#additional_driver_2_driving_license_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_2_driving_license_date').datepicker('setDate', new Date(entity.additional_driver_2_driving_license_date));
+
+      $('#additional_driver_2_driving_license_expiration_date').datepicker({numberOfMonths:1},
+                                        locale);      
+      $('#additional_driver_2_driving_license_expiration_date').datepicker('setDate', new Date(entity.additional_driver_2_driving_license_expiration_date));      
+
+      <% end %>
     }
         
 

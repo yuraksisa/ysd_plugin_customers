@@ -3,7 +3,7 @@ customers_management:
   description: Clientes
   table:
     full_name: Nombre
-    document_id: NIF/CIF
+    document_id: NIF/CIF/Pasaporte
     email: Correo electrónico
     phone_number: Teléfonos
   form:
@@ -15,7 +15,7 @@ customers_management:
     surname: 
       label: Apellidos
     document_id: 
-      label: NIF/CIF
+      label: NIF/CIF/Pasaporte
     email: 
       label: Correo electrónico
     phone_number: 
@@ -25,7 +25,28 @@ customers_management:
     language: 
       label: Idioma
     address: Dirección
-    invoicing_address: Dirección de facturación  
+    invoicing_address: Dirección de facturación
+    booking_driver_data:
+      title: Datos contrato alquiler
+      fields:
+        document_id_date:
+          label: Fecha del NIF/CIF/Pasaporte
+        document_id_expiration_date:
+          label: Fecha de expiración del NIF/CIF/Pasaporte
+        origin_country:
+          label: País
+        date_of_birth:
+          label: Fecha de nacimiento    
+        driving_license_number:
+          label: Permiso de conducir
+        driving_license_date:
+          label: Fecha permiso de conducir
+        driving_license_country:
+          label: País permiso de conducir
+        driving_license_expiration_date:
+          label: Fecha de expiración permiso conducir
+    booking_additional_drivers_data:
+      title: Datos conductores adicionales      
 address:
   street:
     label: Calle
