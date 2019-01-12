@@ -1,3 +1,7 @@
+customers_types:
+  individual: Persona física
+  legal_entity: Persona jurídica
+  other: Otro
 customers_management:
   title: Clientes
   description: Clientes
@@ -8,14 +12,18 @@ customers_management:
     phone_number: Teléfonos
   form:
     basic_data: Datos básicos
+    customer_type:
+      label: Tipo de cliente
     company_name: 
-      label: Empresa
+      label: Nombre empresa
+    company_document_id: 
+      label: CIF empresa
     name: 
       label: Nombre
     surname: 
       label: Apellidos
     document_id: 
-      label: NIF/CIF/Pasaporte
+      label: NIF/Pasaporte
     email: 
       label: Correo electrónico
     phone_number: 
@@ -24,8 +32,15 @@ customers_management:
       label: Teléfono alternativo  
     language: 
       label: Idioma
+    notes:
+      label: Anotaciones  
     address: Dirección
-    invoicing_address: Dirección de facturación
+    copy_address_to_invoice_address: Copiar dirección cliente
+    copy_address_confirm: ¿Está seguro que desea copiar la dirección del cliente en la dirección de facturación?
+    copy_address_to_invoice_address_successfully: Dirección del cliente copiada con éxito
+    copy_address_to_invoice_address_error: Se ha producido un error copiando la dirección del cliente
+    invoicing_address: Datos de facturación
+    invoice_company_info: <p>Si desea realizar la facturación a nombre de una empresa, indique el tipo de cliente <b>persona jurídica</b> e introduzca el nombre de la empresa y su CIF o número de documento</p>
     booking_driver_data:
       title: Datos contrato alquiler
       fields:

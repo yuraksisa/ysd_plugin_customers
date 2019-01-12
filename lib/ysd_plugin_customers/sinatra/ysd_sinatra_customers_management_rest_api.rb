@@ -21,11 +21,21 @@ module Sinatra
             if request.media_type == "application/json"
               request.body.rewind
               search_request = JSON.parse(URI.unescape(request.body.read))
-              search_text = search_request['search']
-              conditions = Conditions::Comparison.new(:name, '$like', "%#{search_text}%")
-
-              total = conditions.build_datamapper(::Yito::Model::Customers::Customer).all.count
-              data = conditions.build_datamapper(::Yito::Model::Customers::Customer).all(offset_order_query)
+              
+              if search_request.has_key?('search') and (search_request['search'].to_s.strip.length > 0)
+                search_text = search_request['search'].to_s.strip
+                conditions = Conditions::JoinComparison.new('$or',
+                                [Conditions::Comparison.new(:full_name, '$like', "%#{search_text}%"),
+                                 Conditions::Comparison.new(:document_id, '$like', "%#{search_text}%"),
+                                 Conditions::Comparison.new(:email, '$like', "%#{search_text}%"),
+                                 Conditions::Comparison.new(:phone_number, '$like', "%#{search_text}%"),
+                                 Conditions::Comparison.new(:mobile_phone, '$like', "%#{search_text}%"),
+                                ])  
+                total = conditions.build_datamapper(::Yito::Model::Customers::Customer).all.count
+                data = conditions.build_datamapper(::Yito::Model::Customers::Customer).all(offset_order_query)
+              else
+                data,total  = ::Yito::Model::Customers::Customer.all_and_count(offset_order_query)
+              end  
             else
               data,total  = ::Yito::Model::Customers::Customer.all_and_count(offset_order_query)
             end
@@ -118,6 +128,20 @@ module Sinatra
         
         end
         
+        #
+        # Copy the customer address to the customer address
+        #
+        app.post "/api/customers/:id/copy-address-to-invoice-address", :allowed_usergroups => ['booking_manager','staff'] do
+                                        
+          if data = ::Yito::Model::Customers::Customer.get(params[:id])
+            data.copy_address_to_invoice_address
+          end
+      
+          content_type :json
+          data.to_json        
+        
+        end
+
         #
         # Deletes a customer
         #

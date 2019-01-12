@@ -1,5 +1,5 @@
-require(["jquery", "YSDEntityManagement", "jquery.ui", "YSDjson2"], 
-         function($, EntityManagement, EntityManagementComplementHooks) {
+require(["jquery", "YSDEntityManagement", "YSDEntityManagementComplementHooks", "YSDGui", "jquery.ui", "YSDjson2"], 
+         function($, EntityManagement, EntityManagementComplementHooks, YSDGui) {
     
   var customersHook = {
      
@@ -11,6 +11,19 @@ require(["jquery", "YSDEntityManagement", "jquery.ui", "YSDjson2"],
     onEdit : function(entity) {
       $('#name').focus();
       this.configForm(entity);
+      $('#copy_customer_address_btn').bind('click', function(){
+        customersHook.copyCustomerAddress(entity.id);
+      });
+      $('#customer_type').bind('change', function(){
+        if ($('#customer_type').val()=='individual') {
+          $('#company_name_container').hide();
+          $('#company_id_container').hide();
+        }
+        else if ($('#customer_type').val()=='legal_entity') {
+          $('#company_name_container').show();
+          $('#company_id_container').show();
+        }
+      })
     },
   
     onNew : function() {
@@ -22,72 +35,114 @@ require(["jquery", "YSDEntityManagement", "jquery.ui", "YSDjson2"],
       <% if @product_family.driver %>
       $.datepicker.setDefaults( $.datepicker.regional["<%=session[:locale] || 'es'%>" ] );
       var locale = $.datepicker.regional["<%=session[:locale] || 'es'%>"];
-      
-      $('#document_id_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#document_id_date').datepicker('setDate', new Date(entity.document_id_date));
-      
-      $('#document_id_expiration_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#document_id_expiration_date').datepicker('setDate', new Date(entity.document_id_expiration_date));
-      
-      $('#date_of_birth').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#date_of_birth').datepicker('setDate', new Date(entity.date_of_birth));
 
-      $('#driving_license_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#driving_license_date').datepicker('setDate', new Date(entity.driving_license_date));
+      $('#date_of_birth').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.date_of_birth != null) {
+          $('#date_of_birth').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.date_of_birth, 'dd/MM/yyyy')));
+      }
 
-      $('#driving_license_expiration_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#driving_license_expiration_date').datepicker('setDate', new Date(entity.driving_license_expiration_date));
+      $('#document_id_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.document_id_date != null) {
+          $('#document_id_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.document_id_date, 'dd/MM/yyyy')));
+      }
 
-      // Additional driver 1
+      $('#document_id_expiration_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.document_id_expiration_date != null) {
+          $('#document_id_expiration_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.document_id_expiration_date, 'dd/MM/yyyy')));
+      }
 
-      $('#additional_driver_1_document_id_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_1_document_id_date').datepicker('setDate', new Date(entity.additional_driver_1_document_id_date));
-      
-      $('#additional_driver_1_document_id_expiration_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_1_document_id_expiration_date').datepicker('setDate', new Date(entity.additional_driver_1_document_id_expiration_date));
-      
-      $('#additional_driver_1_date_of_birth').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_1_date_of_birth').datepicker('setDate', new Date(entity.additional_driver_1_date_of_birth));
+      $('#driving_license_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.driving_license_date != null) {
+          $('#driving_license_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.driving_license_date, 'dd/MM/yyyy')));
+      }
 
-      $('#additional_driver_1_driving_license_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_1_driving_license_date').datepicker('setDate', new Date(entity.additional_driver_1_driving_license_date));
+      $('#driving_license_expiration_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.driving_license_expiration_date != null) {
+          $('#driving_license_expiration_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.driving_license_expiration_date, 'dd/MM/yyyy')));
+      }
 
-      $('#additional_driver_1_driving_license_expiration_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_1_driving_license_expiration_date').datepicker('setDate', new Date(entity.additional_driver_1_driving_license_expiration_date));
+      $('#additional_driver_1_date_of_birth').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_1_date_of_birth != null) {
+          $('#additional_driver_1_date_of_birth').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_1_date_of_birth, 'dd/MM/yyyy')));
+      }
 
-      // Additional driver 2
+      $('#additional_driver_1_document_id_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_1_document_id_date != null) {
+          $('#additional_driver_1_document_id_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_1_document_id_date, 'dd/MM/yyyy')));
+      }
 
-      $('#additional_driver_2_document_id_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_2_document_id_date').datepicker('setDate', new Date(entity.additional_driver_2_document_id_date));
-      
-      $('#additional_driver_2_document_id_expiration_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_2_document_id_expiration_date').datepicker('setDate', new Date(entity.additional_driver_2_document_id_expiration_date));
-      
-      $('#additional_driver_2_date_of_birth').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_2_date_of_birth').datepicker('setDate', new Date(entity.additional_driver_2_date_of_birth));
+      $('#additional_driver_1_document_id_expiration_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_1_document_id_expiration_date != null) {
+          $('#additional_driver_1_document_id_expiration_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_1_document_id_expiration_date, 'dd/MM/yyyy')));
+      }
 
-      $('#additional_driver_2_driving_license_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_2_driving_license_date').datepicker('setDate', new Date(entity.additional_driver_2_driving_license_date));
+      $('#additional_driver_1_driving_license_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_1_driving_license_date != null) {
+          $('#additional_driver_1_driving_license_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_1_driving_license_date, 'dd/MM/yyyy')));
+      }
 
-      $('#additional_driver_2_driving_license_expiration_date').datepicker({numberOfMonths:1},
-                                        locale);      
-      $('#additional_driver_2_driving_license_expiration_date').datepicker('setDate', new Date(entity.additional_driver_2_driving_license_expiration_date));      
+      $('#additional_driver_1_driving_license_expiration_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_1_driving_license_expiration_date != null) {
+          $('#additional_driver_1_driving_license_expiration_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_1_driving_license_expiration_date, 'dd/MM/yyyy')));
+      }
+
+      $('#additional_driver_2_date_of_birth').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_2_date_of_birth != null) {
+          $('#additional_driver_2_date_of_birth').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_2_date_of_birth, 'dd/MM/yyyy')));
+      }
+
+      $('#additional_driver_2_document_id_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_2_document_id_date != null) {
+          $('#additional_driver_2_document_id_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_2_document_id_date, 'dd/MM/yyyy')));
+      }
+
+      $('#additional_driver_2_document_id_expiration_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_2_document_id_expiration_date != null) {
+          $('#additional_driver_2_document_id_expiration_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_2_document_id_expiration_date, 'dd/MM/yyyy')));
+      }
+
+      $('#additional_driver_2_driving_license_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', maxDate: new Date(), defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_2_driving_license_date != null) {
+          $('#additional_driver_2_driving_license_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_2_driving_license_date, 'dd/MM/yyyy')));
+      }
+
+      $('#additional_driver_2_driving_license_expiration_date').datepicker({numberOfMonths:1, dateFormat: 'dd/mm/yy', defaultDate: ''}, "<%=session[:locale] || 'es'%>" );
+      if (entity.additional_driver_2_driving_license_expiration_date != null) {
+          $('#additional_driver_2_driving_license_expiration_date').datepicker("setDate", $.datepicker.parseDate("dd/mm/yy", hooksManager.view.formatDate(entity.additional_driver_2_driving_license_expiration_date, 'dd/MM/yyyy')));
+      }
 
       <% end %>
+    },
+
+    copyCustomerAddress: function(customerId) {
+      if (confirm('<%=t.customers_management.form.copy_address_confirm%>')) {
+
+            var url = '/api/customers/'+customerId+'/copy-address-to-invoice-address';
+
+            YSDGui.lockBackground('#bbb');
+            var unlock = false;
+            $.ajax({
+                type: 'POST',
+                url : url,
+                contentType : 'application/json; charset=utf-8',
+                success: function(data, textStatus, jqXHR) {                
+                   unlock = true;
+                   YSDGui.unLockBackground();
+                   hooksManager.model.synchronizeCurrentEntity(data);
+                   hooksManager.model.change_state('entity_updated_successfully');
+                   alert('<%=t.customers_management.form.copy_address_to_invoice_address_successfully%>');
+                },
+                error: function(data, textStatus, jqXHR) {
+                    alert('<%=t.customers_management.form.copy_address_to_invoice_address_error%>');
+                },
+                complete: function(jqXHT, textStatus) {
+                    if (!unlock) {
+                        YSDGui.unLockBackground();
+                    }
+                }                    
+            });
+
+      }
     }
         
 

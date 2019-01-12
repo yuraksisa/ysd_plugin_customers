@@ -10,6 +10,17 @@
 <%=t.customers_management.description%>
 </script>
 
+<!-- Renders the search -->
+<script type="text/tmpl" id="elements_search">
+  <form name="contents_search" id="contents_search" style="overflow:visible" class="form-inline">
+     <div class="form-row">
+       <input type="text" name="search" class="search-entity-input form-control"
+              maxlength="60" size="20" placeholder="<%=t.entitymanagement.search%>"/>
+       <button class="btn btn-primary search-entity-button" type="button"><i class="si si-magnifier"></i></button>
+     </div>
+  </form>
+</script>
+
 <!-- Renders the elements container -->
 <script type="text/tmpl" id="elements_container_template">
   <table id="elements_table" class="table table-striped">
@@ -72,7 +83,7 @@
                   <form name="element" class="form-horizontal" method="POST">
                       <%% if (entity) { %>
                       <input type="hidden" name="id" value="<%%=entity.id%>"/>
-                      <%% } %>
+                      <%% } %>                     
                       <div class="form-group">
                          <label class="col-md-3 control-label"><%= t.customers_management.form.name.label %></label>
                          <div class="col-md-9">
@@ -108,7 +119,13 @@
                          <div class="col-md-9">
                            <input type="text" maxlength="15" id="mobile_phone" name="mobile_phone" class="form-control" <%% if (entity) {%> value="<%%=entity.mobile_phone%>" <%%}%>/>
                          </div>
-                      </div>                      
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.notes.label %></label>
+                         <div class="col-md-9">
+                           <textarea id="internal_notes" name="internal_notes" class="form-control" rows="10"><%% if (entity) {%><%%=entity.internal_notes%><%%}%></textarea>
+                         </div>
+                      </div>                                            
                       <div class="form-group">
                         <div class="col-md-9 col-md-offset-3">
                             <%% if (entity) { %>
@@ -123,13 +140,13 @@
             </div>
           </div>
         </div>
-
+       
         <%% if (entity) { %>
 
         <div class="row">
           <div class="col-sm-12 col-md-10 col-md-offset-1">
             <div class="block ">
-              <div class="block-header bg-gray-lighter">
+              <div class="block-header bg-gray-lighter">         
                 <h3 class="block-title"><%= t.customers_management.form.address %></h3>
               </div>
               <div class="block-content block-content-narrow">
@@ -196,9 +213,50 @@
           <div class="col-sm-12 col-md-10 col-md-offset-1">
             <div class="block ">
               <div class="block-header bg-gray-lighter">
+                <div class="block-options-simple">
+                    <button id="copy_customer_address_btn" class="btn btn-xs btn-default" type="button"><%=t.customers_management.form.copy_address_to_invoice_address%></button>
+                </div>                 
                 <h3 class="block-title"><%= t.customers_management.form.invoicing_address %></h3>
               </div>
               <div class="block-content block-content-narrow">
+
+                  <form name="element" class="form-horizontal" method="POST">
+                      <%% if (entity) { %>
+                      <input type="hidden" name="id" value="<%%=entity.id%>"/>
+                      <%% } %>
+                      <div class="alert alert-warning">
+                        <%= t.customers_management.form.invoice_company_info%>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.customer_type.label %></label>
+                         <div class="col-md-8">
+                           <select id="customer_type" name="customer_type" class="form-control">
+                             <option value="individual" <%%if (entity && entity.customer_type=='individual'){%>selected<%%}%>><%=t.customers_types.individual%></option>
+                             <option value="legal_entity" <%%if (entity && entity.customer_type=='legal_entity'){%>selected<%%}%>><%=t.customers_types.legal_entity%></option>
+                           </select>
+                         </div>
+                      </div>
+                      <div id="company_name_container" class="form-group" <%%if (entity.customer_type=='individual'){%>style="display:none"<%%}%>>
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.company_name.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="100" id="company_name" name="company_name" class="form-control" <%% if (entity) {%> value="<%%=entity.company_name%>" <%%}%>/>
+                         </div>
+                      </div>
+                      <div id="company_id_container" class="form-group" <%%if (entity.customer_type=='individual'){%>style="display:none"<%%}%>>
+                         <label class="col-md-3 control-label"><%= t.customers_management.form.company_document_id.label %></label>
+                         <div class="col-md-9">
+                           <input type="text" maxlength="50" id="company_document_id" name="company_document_id" class="form-control" <%% if (entity) {%> value="<%%=entity.company_document_id%>" <%%}%>/>
+                         </div>
+                      </div>                                                                                        
+                      <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3">
+                          <input type="button" class="btn btn-sm btn-primary update-entity-button action-button entity-management-button" value="<%=t.entitymanagement.update%>"/>
+                        </div>
+                      </div>
+                  </form>
+
+                  <hr>
+
                   <form name="element" class="form-horizontal" method="POST">
                       <%% if (entity) { %>
                       <input type="hidden" name="id" value="<%%=entity.id%>"/>
