@@ -75,7 +75,8 @@ module Sinatra
 
           data = conditions.build_datamapper(::Yito::Model::Customers::Customer).all.map do |item|
             {value: item.id,
-             label: "#{item.name} #{item.surname}"}
+             label: "#{item.name} #{item.surname}",
+             document_id: item.document_id}
           end
 
           status 200
