@@ -68,15 +68,20 @@ module Sinatra
           search_text = params[:term]
 
           conditions =  Conditions::JoinComparison.new('$or', [
-                                                            Conditions::Comparison.new(:surname, '$like', "%#{search_text}%"),
+                                                            Conditions::Comparison.new(:full_name, '$like', "%#{search_text}%"),
+                                                            Conditions::Comparison.new(:document_id, '$like', "%#{search_text}%"),
+                                                            Conditions::Comparison.new(:company_name, '$like', "%#{search_text}%"),
+                                                            Conditions::Comparison.new(:company_document_id, '$like', "%#{search_text}%"),
                                                             Conditions::Comparison.new(:email, '$like', "%#{search_text}%"),
                                                             Conditions::Comparison.new(:phone_number, '$like', "%#{search_text}%")
                                                                  ])
 
           data = conditions.build_datamapper(::Yito::Model::Customers::Customer).all.map do |item|
             {value: item.id,
-             label: "#{item.name} #{item.surname}",
-             document_id: item.document_id}
+             label: item.full_name,
+             type: item.customer_type,
+             document_id: item.customer_type == :individual ? item.document_id : item.company_document_id,
+             fullname: item.customer_type == :individual ? item.full_name : item.company_name }
           end
 
           status 200
@@ -118,9 +123,35 @@ module Sinatra
         app.put "/api/customer", :allowed_usergroups => ['booking_manager','staff'] do
           
           data_request = body_as_json(::Yito::Model::Customers::Customer)
-                              
-          if data = ::Yito::Model::Customers::Customer.get(data_request.delete(:id))
+          data_request.each do |k,v|
+              if [:date_of_birth,
+                  :driving_license_date,
+                  :driving_license_expiration_date,
+                  :document_id_date,
+                  :document_id_expiration_date,
+                  :additional_driver_1_date_of_birth,
+                  :additional_driver_1_driving_license_date,
+                  :additional_driver_1_driving_license_expiration_date,
+                  :additional_driver_1_document_id_date,
+                  :additional_driver_1_document_id_expiration_date,
+                  :additional_driver_2_date_of_birth,
+                  :additional_driver_2_driving_license_date,
+                  :additional_driver_2_driving_license_expiration_date,
+                  :additional_driver_2_document_id_date,
+                  :additional_driver_2_document_id_expiration_date,
+                  :additional_driver_3_date_of_birth,
+                  :additional_driver_3_driving_license_date,
+                  :additional_driver_3_driving_license_expiration_date,
+                  :additional_driver_3_document_id_date,
+                  :additional_driver_3_document_id_expiration_date,
+                  :external_invoice_date].include?(k)
+                data_request[k] = nil if v.empty?
+              end
+            end                              
+          if data = ::Yito::Model::Customers::Customer.get(data_request.delete(:id))                      
             data.attributes=data_request  
+            p "data_request:#{data_request.inspect}"
+            p "data:#{data.valid?}--#{data.errors.full_messages.inspect}"
             data.save
           end
       

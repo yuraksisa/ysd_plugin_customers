@@ -9,7 +9,7 @@ module Yito
         storage_names[:default] = 'customerds_customers'
 
         property :id, Serial
-        property :customer_type, Enum[:individual, :legal_entity, :other], default: :individual
+        property :customer_type, Enum[:individual, :legal_entity], default: :individual
         property :company_name, String, length: 100
         property :company_document_id, String, length: 50
         property :name, String, length: 40
