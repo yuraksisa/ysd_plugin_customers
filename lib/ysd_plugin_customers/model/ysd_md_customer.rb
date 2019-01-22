@@ -61,7 +61,7 @@ module Yito
         # Exporting to json
         #
         def as_json(options={})
-
+        
            if options.has_key?(:only)
              super(options)
            else
@@ -70,7 +70,7 @@ module Yito
              relationships.store(:invoice_address, {})
              super(options.merge({:relationships => relationships}))
            end
-
+        
         end
 
       end

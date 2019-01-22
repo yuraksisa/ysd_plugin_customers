@@ -1,0 +1,67 @@
+require(['jquery', 'ysdtemplate', 'YSDEventTarget', 'jquery.formparams','jquery.toast'],
+    function($, tmpl, EventTarget) {
+
+    	selectCustomerModel = {
+    		data: null,
+    		summary: null,
+            events: new EventTarget(),           
+            addListener: function(type, listener) {
+                this.events.addEventListener(type, listener);
+            },
+            removeListener: function(type, listener) {
+                this.events.removeEventListener(type, listener);
+            },
+            search: function() {
+				var request = $('form[name=search_customer_form]').formParams();
+                var requestJSON = JSON.stringify(request);
+                var url = '/api/customers?mode=select';
+                $.ajax({
+                    type: 'POST',
+                    data: requestJSON,
+                    url: url,
+                    contentType : 'application/json; charset=utf-8',
+                    success: function(data, textStatus, jqXHR) {
+                        selectCustomerModel.data = data.data;
+                        selectCustomerModel.summary = data.summary;
+                        selectCustomerView.update('data_loaded');
+                    },
+                    error: function(data, textStatus, jqXHR) {
+                        alert('<%=t.customer_selection.form.error_searching_customer%>');
+                    }
+                });
+            }
+    	};
+
+    	selectCustomerController = {
+    		searchButtonClick: function() {
+    			selectCustomerModel.search();
+    		}
+    	};
+
+    	selectCustomerView = {
+
+    		init: function() {
+    			$('#select_customer_search_button').click('click', function(){
+    				selectCustomerController.searchButtonClick();
+    			});
+    		},
+
+    		show: function() {
+    			$('#select_customer_modal_container').modal('show');
+    		},
+
+    		update: function(action) {
+    			switch (action) {
+    				case 'data_loaded':
+    					var html = tmpl('search_customer_result_list_script', {data: selectCustomerModel.data});
+    					$('#result_table_container').html(html);
+    					$('#search_customer_result_block').show();
+    					break;
+    			}
+    		}
+    	};
+
+    	selectCustomerView.init();
+
+    }
+);    

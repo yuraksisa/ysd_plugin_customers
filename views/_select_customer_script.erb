@@ -1,0 +1,27 @@
+<script id="search_customer_result_list_script" type="text/tmpl">
+	<table id="customer_list_table" class="table table-striped">
+	  <thead>
+		  <tr>
+		    <th><%= t.customer_selection.table.full_name %></th>
+		    <th><%= t.customer_selection.table.document_id %></th>
+		    <th><%= t.customer_selection.table.company_name %></th>	
+		    <th><%= t.customer_selection.table.company_document_id %></th>			    	    
+		    <th><%= t.customer_selection.table.email %></th>
+		    <th><%= t.customer_selection.table.phone_number %></th>
+		    <th></th>
+		  </tr>
+	  </thead>
+	  <tbody>
+	  	<%% for (var idx=0; idx<data.length; idx++) {%>
+	  		<tr>
+	  			<td><%%= data[idx].full_name%></td>
+	  			<td><%%= data[idx].document_id%></td>
+	  			<td><%%= data[idx].company_name%></td>
+	  			<td><%%= data[idx].company_document_id%></td>
+	  			<td><%%= data[idx].email%></td>
+	  			<td><%%= data[idx].phone_number%></td>
+	  		</tr>	
+	  	<%% } %>
+	  </tbody>
+	</table>  
+</script>

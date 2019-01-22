@@ -1,0 +1,51 @@
+<div class="modal fade" id="select_customer_modal_container" tabindex="-1"
+     role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <ul class="block-options">
+          <li>
+            <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
+          </li>
+        </ul>
+        <h3 class="modal-title"><%=t.customer_selection.form.title%></h3>
+      </div>
+      <div class="modal-body">
+		<div id="customer_selector_container">
+		  <!-- Search form -->
+		  <div class="row">
+		    <div class="col-lg-12">
+		      <div class="block block-bordered">
+		        <div class="block-header bg-gray-lighter">
+		          <h3 class="block-title"><%=t.customer_selection.form.search_block_title%></h3>
+		        </div>
+		        <div class="block-content">
+		          <form name="search_customer_form" class="form-horizontal">
+		            <div class="form-group">
+		              <div class="col-sm-12">
+		                <input type="text" name="search" id="search" class="fieldcontrol" autocomplete="off" placeholder="<%=t.customer_selection.form.search_placeholder%>"/>
+		              </div>
+		            </div>
+		            <div class="form-group">
+		              <div class="col-sm-12">
+		                <button id="select_customer_search_button" class="btn btn-sm btn-primary pull-right" type="button"><%=t.entitymanagement.search%></button>
+		              </div>
+		            </div>
+		          </form>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		  <!-- Result -->
+		  <div id="search_customer_result_block" class="block block-bordered" style="display: none">
+		    <div class="block-header bg-gray-lighter">
+		      <h3 class="block-title"><%=t.customer_selection.form.search_result%></h3>
+		    </div>
+		    <div id="result_table_container" class="block-content">
+		    </div>
+		  </div>
+		</div>  
+      </div>
+    </div>
+  </div>
+</div>  	

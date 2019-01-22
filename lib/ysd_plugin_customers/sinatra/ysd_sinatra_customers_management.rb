@@ -12,6 +12,7 @@ module Sinatra
         #
         app.get '/admin/customers/customers/?*', :allowed_usergroups => ['booking_manager','staff'] do
 
+          p "CUSTOMERS-START"
           # TODO : Review because it's a booking plugin configuration
           @product_family = ::Yito::Model::Booking::ProductFamily.get(SystemConfiguration::Variable.get_value('booking.item_family'))
           

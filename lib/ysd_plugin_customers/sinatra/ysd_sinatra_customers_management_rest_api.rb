@@ -10,23 +10,38 @@ module Sinatra
         #                    
         # Query customers
         #
+        # == Query parameters
+        #
+        # page:: The page number (for pagination)
+        # limit:: The page size (for pagination)
+        # model:: 'select' to query for a select (simplified fields) 
+        #
+        # == Search parameters (body as json)
+        #
+        # search:: The search keyword
+        # 
         ["/api/customers","/api/customers/page/:page"].each do |path|
           
           app.post path, :allowed_usergroups => ['booking_manager','staff'] do
 
+            select_fields = [:id, :full_name, :document_id, :company_name, :company_document_id, :email, :phone_number, :mobile_phone]
+
+            # Pagination, order and fields
             page = [params[:page].to_i, 1].max
             page_size = 20
-            offset_order_query = {:offset => (page - 1)  * page_size, :limit => page_size, :order => [:name.asc]}
-
+            offset_order_query = {:offset => (page - 1)  * page_size, :limit => page_size, :order => [:full_name.asc]}
+            offset_order_query.merge!(fields: select_fields) if params[:mode] == 'select'
+            # Search  
             if request.media_type == "application/json"
               request.body.rewind
-              search_request = JSON.parse(URI.unescape(request.body.read))
-              
+              search_request = JSON.parse(URI.unescape(request.body.read))            
               if search_request.has_key?('search') and (search_request['search'].to_s.strip.length > 0)
                 search_text = search_request['search'].to_s.strip
                 conditions = Conditions::JoinComparison.new('$or',
                                 [Conditions::Comparison.new(:full_name, '$like', "%#{search_text}%"),
                                  Conditions::Comparison.new(:document_id, '$like', "%#{search_text}%"),
+                                 Conditions::Comparison.new(:company_name, '$like', "%#{search_text}%"),
+                                 Conditions::Comparison.new(:company_document_id, '$like', "%#{search_text}%"),                                 
                                  Conditions::Comparison.new(:email, '$like', "%#{search_text}%"),
                                  Conditions::Comparison.new(:phone_number, '$like', "%#{search_text}%"),
                                  Conditions::Comparison.new(:mobile_phone, '$like', "%#{search_text}%"),
@@ -41,27 +56,26 @@ module Sinatra
             end
 
             content_type :json
-            {:data => data, :summary => {:total => total}}.to_json
-          
+
+            if params[:mode] == 'select'
+              data_json = data.to_json(only: select_fields)
+              summary_json= {total: total}.to_json
+              "{\"data\": #{data_json}, \"summary\": #{summary_json}}"
+            else  
+              {:data => data, :summary => {:total => total}}.to_json
+            end
+
           end
         
         end
         
         #
-        # Get all customer
+        # Search customer for autocomplete
         #
-        app.get "/api/customers", :allowed_usergroups => ['booking_manager','staff'] do
-
-          data = ::Yito::Model::Customers::Customer.all()
-
-          status 200
-          content_type :json
-          data.to_json
-
-        end
-
+        # == Query parameters::
         #
-        # Search customer
+        # term:: The search term (full_name, document_id, company_name, company_document_id, email, phone_number)
+        #
         #
         app.get "/api/customers-search", :allowed_usergroups => ['booking_manager', 'staff'] do
 

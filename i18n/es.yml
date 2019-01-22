@@ -76,4 +76,18 @@ address:
   zip:
     label: Código postal
   country:
-    label: País        
+    label: País
+customer_selection:
+  form:
+    title: Seleccionar cliente
+    search_block_title: Buscar cliente
+    search_result: Resultados
+    search_placeholder: Nombre completo, teléfono, correo electrónico
+    error_searching_customer: Error buscando cliente
+  table:
+    full_name: Nombre
+    document_id: NIF/Pasaporte
+    company_name: Empresa
+    company_document_id: CIF    
+    email: Correo electrónico
+    phone_number: Teléfonos            
