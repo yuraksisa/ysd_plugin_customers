@@ -4,7 +4,11 @@ require(['jquery', 'ysdtemplate', 'YSDEventTarget', 'jquery.formparams','jquery.
     	selectCustomerModel = {
     		data: null,
     		summary: null,
-            events: new EventTarget(),           
+            events: new EventTarget(),    
+            setText: function(text) {
+                $('form[name=search_customer_form] input[name=search]').val(text);
+                this.search();
+            },       
             addListener: function(type, listener) {
                 this.events.addEventListener(type, listener);
             },
@@ -13,35 +17,53 @@ require(['jquery', 'ysdtemplate', 'YSDEventTarget', 'jquery.formparams','jquery.
             },
             search: function() {
 				var request = $('form[name=search_customer_form]').formParams();
-                var requestJSON = JSON.stringify(request);
-                var url = '/api/customers?mode=select';
-                $.ajax({
-                    type: 'POST',
-                    data: requestJSON,
-                    url: url,
-                    contentType : 'application/json; charset=utf-8',
-                    success: function(data, textStatus, jqXHR) {
-                        selectCustomerModel.data = data.data;
-                        selectCustomerModel.summary = data.summary;
-                        selectCustomerView.update('data_loaded');
-                    },
-                    error: function(data, textStatus, jqXHR) {
-                        alert('<%=t.customer_selection.form.error_searching_customer%>');
-                    }
-                });
+                if (request && request.search && request.search.length > 0) {
+                    var requestJSON = JSON.stringify(request);
+                    var url = '/api/customers?mode=select';
+                    $.ajax({
+                        type: 'POST',
+                        data: requestJSON,
+                        url: url,
+                        contentType : 'application/json; charset=utf-8',
+                        success: function(data, textStatus, jqXHR) {
+                            selectCustomerModel.data = data.data;
+                            selectCustomerModel.summary = data.summary;
+                            selectCustomerView.update('data_loaded');
+                        },
+                        error: function(data, textStatus, jqXHR) {
+                            alert('<%=t.customer_selection.form.error_searching_customer%>');
+                        }
+                    });
+                }
             }
     	};
 
     	selectCustomerController = {
     		searchButtonClick: function() {
-    			selectCustomerModel.search();
-    		}
+                if ($('form[name=search_customer_form] input[name=search]').val().trim() == '') {
+                    alert('<%=t.customer_selection.form.search_blank%>');
+                }
+                else {
+    			    selectCustomerModel.search();
+                }
+    		},
+            cancelButtonClick: function() {
+                selectCustomerView.hide();
+            },
+            selectCustomerButtonClick: function(data) {
+                if (!data.id){
+                    alert('<%=t.customer_selection.form.customer_not_selected%>');
+                }
+                else {
+                    selectCustomerModel.events.fireEvent({type: 'customer_selected', data: data});
+                }
+            }
     	};
 
     	selectCustomerView = {
 
     		init: function() {
-    			$('#select_customer_search_button').click('click', function(){
+    			$('#select_customer_search_button').bind('click', function(){
     				selectCustomerController.searchButtonClick();
     			});
     		},
@@ -50,12 +72,24 @@ require(['jquery', 'ysdtemplate', 'YSDEventTarget', 'jquery.formparams','jquery.
     			$('#select_customer_modal_container').modal('show');
     		},
 
+            hide: function() {
+                $('#select_customer_modal_container').modal('hide');
+            },
+
     		update: function(action) {
     			switch (action) {
     				case 'data_loaded':
     					var html = tmpl('search_customer_result_list_script', {data: selectCustomerModel.data});
     					$('#result_table_container').html(html);
     					$('#search_customer_result_block').show();
+                        $('#search_customer_select_customer_button').unbind('click');
+                        $('#search_customer_select_customer_button').bind('click', function(){
+                            selectCustomerController.selectCustomerButtonClick($('form[name=customer_select_form]').formParams());
+                        });
+                        $('#search_customer_cancel_select_customer_button').unbind('click');
+                        $('#search_customer_cancel_select_customer_button').bind('click', function(){
+                            selectCustomerController.cancelButtonClick();
+                        });
     					break;
     			}
     		}

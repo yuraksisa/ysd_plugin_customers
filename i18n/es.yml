@@ -84,6 +84,8 @@ customer_selection:
     search_result: Resultados
     search_placeholder: Nombre completo, teléfono, correo electrónico
     error_searching_customer: Error buscando cliente
+    search_blank: Por favor introduzca datos de búsqueda
+    customer_not_selected: Por favor, seleccione un cliente
   table:
     full_name: Nombre
     document_id: NIF/Pasaporte

@@ -22,7 +22,7 @@ module Sinatra
         # 
         ["/api/customers","/api/customers/page/:page"].each do |path|
           
-          app.post path, :allowed_usergroups => ['booking_manager','staff'] do
+          app.post path, :allowed_usergroups => ['booking_manager', 'booking_operator', 'staff'] do
 
             select_fields = [:id, :full_name, :document_id, :company_name, :company_document_id, :email, :phone_number, :mobile_phone]
 
@@ -77,7 +77,7 @@ module Sinatra
         # term:: The search term (full_name, document_id, company_name, company_document_id, email, phone_number)
         #
         #
-        app.get "/api/customers-search", :allowed_usergroups => ['booking_manager', 'staff'] do
+        app.get "/api/customers-search", :allowed_usergroups => ['booking_manager', 'booking_operator', 'staff'] do
 
           search_text = params[:term]
 
@@ -105,9 +105,42 @@ module Sinatra
         end
 
         #
+        # Check customers by full_name, phone_number_1, phone_number_2, email, document_id
+        #
+        app.get '/api/customer-check', allowed_usergroups: ['booking_manager', 'booking_operator', 'staff'] do
+
+
+          if params[:full_name] or params[:phone_number] or params[:phone_number_2] or params[:email] or params[:document_id]
+            conditions_list = []
+            conditions_list << Conditions::Comparison.new(:full_name, '$eq', params[:full_name]) if params[:full_name]
+            conditions_list << Conditions::Comparison.new(:document_id, '$eq', params[:document_id]) if params[:document_id]
+            conditions_list << Conditions::Comparison.new(:company_document_id, '$eq', params[:document_id]) if params[:document_id]
+            conditions_list << Conditions::Comparison.new(:email, '$eq', params[:email]) if params[:email]
+            conditions_list << Conditions::Comparison.new(:phone_number, '$eq', params[:phone_number_1]) if params[:phone_number_1]
+            conditions_list << Conditions::Comparison.new(:phone_number, '$eq', params[:phone_number_2]) if params[:phone_number_2]
+            conditions_list << Conditions::Comparison.new(:mobile_phone, '$eq', params[:phone_number_1]) if params[:phone_number_1]
+            conditions_list << Conditions::Comparison.new(:mobile_phone, '$eq', params[:phone_number_2]) if params[:phone_number_2]
+            conditions =  Conditions::JoinComparison.new('$or', conditions_list)
+            fields = [:id, :full_name, :document_id, :company_name, :company_document_id, :email, :phone_number, :mobile_phone]
+            data = conditions.build_datamapper(::Yito::Model::Customers::Customer).all(fields: fields).map do |item|
+                      data = {id: item.id, full_name: item.full_name, document_id: item.document_id,
+                              company_name: item.company_name, company_document_id: item.company_document_id,
+                              email: item.email, phone_number: item.phone_number, mobile_phone: item.mobile_phone}
+                      data
+                   end
+            status 200
+            content_type :json
+            data.to_json       
+          else
+            status 500
+          end
+
+        end
+
+        #
         # Get a customer
         #
-        app.get "/api/customer/:id", :allowed_usergroups => ['booking_manager','staff'] do
+        app.get "/api/customer/:id", :allowed_usergroups => ['booking_manager', 'booking_operator', 'staff'] do
         
           data = ::Yito::Model::Customers::Customer.get(params[:id].to_i)
           
@@ -120,7 +153,7 @@ module Sinatra
         #
         # Create a customer
         #
-        app.post "/api/customer", :allowed_usergroups => ['booking_manager','staff'] do
+        app.post "/api/customer", :allowed_usergroups => ['booking_manager', 'booking_operator','staff'] do
         
           data_request = body_as_json(::Yito::Model::Customers::Customer)
           data = ::Yito::Model::Customers::Customer.create(data_request)
@@ -134,7 +167,7 @@ module Sinatra
         #
         # Updates a customer
         #
-        app.put "/api/customer", :allowed_usergroups => ['booking_manager','staff'] do
+        app.put "/api/customer", :allowed_usergroups => ['booking_manager', 'booking_operator','staff'] do
           
           data_request = body_as_json(::Yito::Model::Customers::Customer)
           data_request.each do |k,v|
@@ -177,7 +210,7 @@ module Sinatra
         #
         # Copy the customer address to the customer address
         #
-        app.post "/api/customers/:id/copy-address-to-invoice-address", :allowed_usergroups => ['booking_manager','staff'] do
+        app.post "/api/customers/:id/copy-address-to-invoice-address", :allowed_usergroups => ['booking_manager', 'booking_operator','staff'] do
                                         
           if data = ::Yito::Model::Customers::Customer.get(params[:id])
             data.copy_address_to_invoice_address
@@ -191,7 +224,7 @@ module Sinatra
         #
         # Deletes a customer
         #
-        app.delete "/api/customer", :allowed_usergroups => ['booking_manager','staff'] do
+        app.delete "/api/customer", :allowed_usergroups => ['booking_manager', 'booking_operator','staff'] do
         
           data_request = body_as_json(::Yito::Model::Customers::Customer)
           
