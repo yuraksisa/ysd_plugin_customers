@@ -24,7 +24,7 @@ module Sinatra
           
           app.post path, :allowed_usergroups => ['booking_manager', 'booking_operator', 'staff'] do
 
-            select_fields = [:id, :full_name, :document_id, :company_name, :company_document_id, :email, :phone_number, :mobile_phone]
+            select_fields = [:id, :customer_type, :full_name, :document_id, :company_name, :company_document_id, :email, :phone_number, :mobile_phone]
 
             # Pagination, order and fields
             page = [params[:page].to_i, 1].max

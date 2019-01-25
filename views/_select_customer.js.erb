@@ -55,7 +55,14 @@ require(['jquery', 'ysdtemplate', 'YSDEventTarget', 'jquery.formparams','jquery.
                     alert('<%=t.customer_selection.form.customer_not_selected%>');
                 }
                 else {
-                    selectCustomerModel.events.fireEvent({type: 'customer_selected', data: data});
+                    var customer = null;
+                    for (var idx=0;idx<selectCustomerModel.data.length;idx++) {
+                        if (selectCustomerModel.data[idx].id == data.id) {
+                            customer = selectCustomerModel.data[idx];
+                            break;
+                        }
+                    }
+                    selectCustomerModel.events.fireEvent({type: 'customer_selected', data: customer});
                 }
             }
     	};
@@ -73,6 +80,8 @@ require(['jquery', 'ysdtemplate', 'YSDEventTarget', 'jquery.formparams','jquery.
     		},
 
             hide: function() {
+                $('form[name=search_customer_form] input[name=search]').val('');
+                $('#search_customer_result_block').hide();
                 $('#select_customer_modal_container').modal('hide');
             },
 
